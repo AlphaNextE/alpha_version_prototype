@@ -4,7 +4,4 @@ pandas==1.5.2
 Pillow==9.3.0
 folium==0.14.0
 streamlit-folium==0.8.1
-tensorflow==2.11.0
-tensorflow-estimator==2.11.0
-tensorflow-intel==2.11.0
-tensorflow-io-gcs-filesystem==0.28.0
+
