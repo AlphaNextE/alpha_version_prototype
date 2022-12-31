@@ -3,8 +3,8 @@ numpy==1.23.5
 pandas==1.5.2
 Pillow==9.3.0
 folium==0.14.0
-opencv-python==4.1.1.26
-opencv-python-headless==4.1.1.26
+opencv-python==3.4.0.14
+opencv-python-headless==3.4.0.14
 streamlit-folium==0.8.1
 tensorflow==2.11.0
 streamlit==1.16.0
