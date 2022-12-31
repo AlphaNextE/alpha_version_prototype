@@ -63,7 +63,7 @@ with tab2:
     st.subheader("실시간 CCTV 영상")
     run = st.checkbox('Run')
     FRAME_WINDOW = st.image([])
-    camera = cv2.VideoCapture(2,cv2.CAP_DSHOW)
+    camera = cv2.VideoCapture(0,cv2.CAP_DSHOW)
     
     btn_chk = st.button('Capture')
 
