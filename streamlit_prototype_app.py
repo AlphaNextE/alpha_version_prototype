@@ -31,7 +31,7 @@ with tab1:
     smoking_area = pd.read_csv('흡연부스중구름방.csv')
 
     # 시작좌표 및 타일지정
-    center = [37.5636204, 126.997976] # 서울 중구청 좌표
+    center = [37.5664750, 126.981846] # 하나카드좌표
     tiles = ['cartodbpositron', 'Stamen Toner', 'OpenStreetMap']
 
     st.subheader('흡연부스 지도')
@@ -63,7 +63,7 @@ with tab2:
     st.subheader("실시간 CCTV 영상")
     run = st.checkbox('Run')
     FRAME_WINDOW = st.image([])
-    camera = cv2.VideoCapture(0,cv2.CAP_DSHOW)
+    camera = cv2.VideoCapture(2,cv2.CAP_DSHOW)
     
     btn_chk = st.button('Capture')
 
@@ -75,15 +75,15 @@ with tab2:
         # 이미지 캡쳐
         if btn_chk == True:   
             ret, img = camera.read()
-            img_captured = cv2.imwrite('img_captured.png', img)  
+            img_captured = cv2.imwrite(r'C:\Users\User\Desktop\prototype\images\captured\img_captured.png', img)  
 
             np.set_printoptions(suppress=True)
 
             data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
             
-            image = Image.open('img_captured.png').convert('RGB')
-
+            image = Image.open(r'C:\Users\User\Desktop\prototype\images\captured\img_captured.png').convert('RGB')
+            
             size = (224, 224)
             image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
 
@@ -111,7 +111,7 @@ with tab2:
             
             
 with tab3:
-    st.subheader('알림 기능 예시')
+    st.subheader('알림 기능')
     alert_run = st.checkbox('Alert')
     trash_can = 0
     
