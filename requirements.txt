@@ -5,4 +5,5 @@ Pillow==9.3.0
 folium==0.14.0
 opencv-python==4.6.0.66
 streamlit-folium==0.8.1
+tensorflow==2.11.0
 
