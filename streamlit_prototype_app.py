@@ -18,7 +18,7 @@ from PIL import Image, ImageOps
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-model = load_model('keras_Model.h5', compile=False)
+model = load_model('keras_model.h5', compile=False)
 
 class_names = open('labels.txt', 'r', encoding='utf-8').readlines()
 
