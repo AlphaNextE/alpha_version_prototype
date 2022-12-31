@@ -63,7 +63,7 @@ with tab2:
     st.subheader("실시간 CCTV 영상")
     run = st.checkbox('Run')
     FRAME_WINDOW = st.image([])
-    camera = cv2.VideoCapture(0,cv2.CAP_DSHOW)
+    camera = cv2.VideoCapture(2,cv2.CAP_DSHOW)
     
     btn_chk = st.button('Capture')
 
@@ -72,37 +72,37 @@ with tab2:
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         FRAME_WINDOW.image(frame)
                
-        # 이미지 캡쳐
-        if btn_chk == True:   
-            ret, img = camera.read()
-            img_captured = cv2.imwrite('./images/img_captured.png', img)  
+        # # 이미지 캡쳐
+        # if btn_chk == True:   
+        #     ret, img = camera.read()
+        #     img_captured = cv2.imwrite(r'C:\Users\User\Desktop\prototype\images\captured\img_captured.png', img)  
 
-            np.set_printoptions(suppress=True)
+        #     np.set_printoptions(suppress=True)
 
-            data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
+        #     data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
             
-            image = Image.open('./images/img_captured.png').convert('RGB')
+        #     image = Image.open(r'C:\Users\User\Desktop\prototype\images\captured\img_captured.png').convert('RGB')
             
-            size = (224, 224)
-            image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
+        #     size = (224, 224)
+        #     image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
 
-            image_array = np.asarray(image)
+        #     image_array = np.asarray(image)
 
-            normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1# Load the image into the array
-            data[0] = normalized_image_array
+        #     normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1# Load the image into the array
+        #     data[0] = normalized_image_array
 
-            prediction = model.predict(data)
-            index = np.argmax(prediction)
-            class_name = class_names[index]
-            confidence_score = prediction[0][1]
+        #     prediction = model.predict(data)
+        #     index = np.argmax(prediction)
+        #     class_name = class_names[index]
+        #     confidence_score = prediction[0][1]
             
-            clean_status = round(100 - confidence_score * 100, 2)
+        #     clean_status = round(100 - confidence_score * 100, 2)
             
-            if clean_status <= 50:
-                st.warning(f'청결도: {class_name[2:]}, 청결도 : {clean_status}%', icon="⚠️")
+        #     if clean_status <= 50:
+        #         st.warning(f'청결도: {class_name[2:]}, 청결도 : {clean_status}%', icon="⚠️")
 
-            btn_chk = False
+        #     btn_chk = False
             
             
     else:   
