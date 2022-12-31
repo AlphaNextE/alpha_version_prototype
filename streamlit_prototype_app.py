@@ -75,14 +75,14 @@ with tab2:
         # 이미지 캡쳐
         if btn_chk == True:   
             ret, img = camera.read()
-            img_captured = cv2.imwrite('img_captured.png', img)  
+            img_captured = cv2.imwrite(r'https://github.com/AlphaNextE/alpha_version_prototype.git/img_captured.png', img)  
 
             np.set_printoptions(suppress=True)
 
             data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
             
-            image = Image.open('img_captured.png').convert('RGB')
+            image = Image.open(r'https://github.com/AlphaNextE/alpha_version_prototype.git/img_captured.png').convert('RGB')
             
             size = (224, 224)
             image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
