@@ -63,7 +63,7 @@ run = st.checkbox('Run')
 
 while run:
 
-    img_file_buffer = st.camera_input(label='CCTV', key='CCTV')
+    img_file_buffer = st.camera_input(label='CCTV', key='Smoking Booth CCTV')
     
     # 이미지 캡쳐
     if img_file_buffer is not None:
