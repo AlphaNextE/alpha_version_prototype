@@ -74,24 +74,21 @@ while run:
         image = cv2.resize(cv2_img, (244, 244))
         
         image_array = np.asarray(image)
+        st.write(type(image))
+        st.write(type(image_array))
+#         normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1# Load the image into the array
+#         data[0] = normalized_image_array
 
-        normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1# Load the image into the array
-        data[0] = normalized_image_array
-
-        prediction = model.predict(data)
-        index = np.argmax(prediction)
-        class_name = class_names[index]
-        confidence_score = prediction[0][1]
+#         prediction = model.predict(data)
+#         index = np.argmax(prediction)
+#         class_name = class_names[index]
+#         confidence_score = prediction[0][1]
         
-        clean_status = round(100 - confidence_score * 100, 2)
+#         clean_status = round(100 - confidence_score * 100, 2)
         
-        if clean_status <= 50:
-            st.warning(f'청결도: {class_name[2:]}, 청결도 : {clean_status}%', icon="⚠️")
+#         if clean_status <= 50:
+#             st.warning(f'청결도: {class_name[2:]}, 청결도 : {clean_status}%', icon="⚠️")
         
-        
-else:   
-    camera.release()
-    # pass
         
         
 
