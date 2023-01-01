@@ -61,37 +61,36 @@ st.subheader("실시간 CCTV 영상")
 run = st.checkbox('Run')
 
 
-while run:
 
-    img_file_buffer = st.camera_input(label='CCTV', key='hey everybody do you know my name')
-    
-    # 이미지 캡쳐
-    if img_file_buffer is not None:
-        bytes_data = img_file_buffer.getvalue()
-        cv2_img = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
-        
-        np.set_printoptions(suppress=True)
+img_file_buffer = st.camera_input(label='CCTV', key='hey everybody do you know my name')
 
-        data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
-       
-        image = Image.open(img_file_buffer)
+# 이미지 캡쳐
+if img_file_buffer is not None:
+    bytes_data = img_file_buffer.getvalue()
+    cv2_img = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
 
-        img_array = np.array(image)
-        size = (224, 224)
-        image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
-        image_array = np.asarray(image)
-        normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1# Load the image into the array
-        data[0] = normalized_image_array
+    np.set_printoptions(suppress=True)
 
-        prediction = model.predict(data)
-        index = np.argmax(prediction)
-        class_name = class_names[index]
-        confidence_score = prediction[0][1]
-        
-        clean_status = round(100 - confidence_score * 100, 2)
-        
-        if clean_status <= 50:
-            st.warning(f'청결도: {class_name[2:]}, 청결도 : {clean_status}%', icon="⚠️")
+    data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
+
+    image = Image.open(img_file_buffer)
+
+    img_array = np.array(image)
+    size = (224, 224)
+    image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
+    image_array = np.asarray(image)
+    normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1# Load the image into the array
+    data[0] = normalized_image_array
+
+    prediction = model.predict(data)
+    index = np.argmax(prediction)
+    class_name = class_names[index]
+    confidence_score = prediction[0][1]
+
+    clean_status = round(100 - confidence_score * 100, 2)
+
+    if clean_status <= 50:
+        st.warning(f'청결도: {class_name[2:]}, 청결도 : {clean_status}%', icon="⚠️")
         
         
         
