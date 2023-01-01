@@ -76,7 +76,7 @@ while run:
        
         image = Image.open(img_file_buffer)
 
-        img_array = np.array(img)
+        img_array = np.array(image)
         size = (224, 224)
         image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
         image_array = np.asarray(image)
