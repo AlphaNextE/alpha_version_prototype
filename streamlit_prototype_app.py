@@ -61,9 +61,6 @@ with tab2:
 
     # 실시간 CCTV // 라이브 웹캠
     st.subheader("실시간 CCTV 영상")
-    run = st.checkbox('Run')
-
-
 
     img_file_buffer = st.camera_input(label='CCTV', key='hey everybody do you know my name')
 
