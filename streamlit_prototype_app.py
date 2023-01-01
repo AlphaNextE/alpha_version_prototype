@@ -7,14 +7,5 @@ img_file_buffer = st.camera_input("Take a picture")
 st.save("img_file_buffer")
 
 if img_file_buffer is not None:
-    # To read image file buffer with OpenCV:
+    # To read image file buffer as bytes:
     bytes_data = img_file_buffer.getvalue()
-    cv2_img = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
-
-    # Check the type of cv2_img:
-    # Should output: <class 'numpy.ndarray'>
-    st.write(type(cv2_img))
-
-    # Check the shape of cv2_img:
-    # Should output shape: (height, width, channels)
-    st.write(cv2_img.shape)
