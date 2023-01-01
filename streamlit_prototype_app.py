@@ -1,3 +1,32 @@
+Skip to content
+Search or jump to…
+Pull requests
+Issues
+Codespaces
+Marketplace
+Explore
+ 
+@AlphaNextE 
+AlphaNextE
+/
+alpha_version_prototype
+Private
+Code
+Issues
+Pull requests
+Actions
+Projects
+Security
+Insights
+Settings
+alpha_version_prototype/streamlit_prototype_app.py /
+@AlphaNextE
+AlphaNextE Update streamlit_prototype_app.py
+Latest commit f5f2135 1 minute ago
+ History
+ 1 contributor
+116 lines (73 sloc)  2.82 KB
+
 # 모듈 불러오기
 import streamlit as st
 from streamlit_folium import st_folium
@@ -22,95 +51,97 @@ model = load_model('keras_model.h5', compile=False)
 
 class_names = open('labels.txt', 'r', encoding='utf-8').readlines()
 
+tab1, tab2, tab3 = st.tabs(['Main', 'Sub1', 'Sub2'])
 
 
-# 흡연구역 불러오기
-smoking_area = pd.read_csv('흡연부스중구름방.csv')
+with tab1:
+    # 흡연구역 불러오기
+    smoking_area = pd.read_csv('흡연부스중구름방.csv')
 
-# 시작좌표 및 타일지정
-center = [37.5664750, 126.981846] # 하나카드좌표
-tiles = ['cartodbpositron', 'Stamen Toner', 'OpenStreetMap']
+    # 시작좌표 및 타일지정
+    center = [37.5664750, 126.981846] # 하나카드좌표
+    tiles = ['cartodbpositron', 'Stamen Toner', 'OpenStreetMap']
 
-st.subheader('흡연부스 지도')
+    st.subheader('흡연부스 지도')
 
-# 지도에 표시
-m = folium.Map(
-    location = [center[0], center[1]],
-    zoom_start = 18,
-#     tiles = tiles[0]
-)
-
-
-# 중구 흡연구역 마커
-for i in range(smoking_area.shape[0]):
-        folium.Marker(
-            location = [smoking_area.loc[i, '_Y'], smoking_area.loc[i, '_X']],
-            popup = smoking_area.loc[i, 'field1'],
-            tooltip = smoking_area.loc[i, 'field1'],
-            icon = folium.Icon('red', icon = 'star')
-        ).add_to(m)
-
-# 보여주기
-st_data = st_folium(m, height=500, width=1200)
+    # 지도에 표시
+    m = folium.Map(
+        location = [center[0], center[1]],
+        zoom_start = 18,
+    #     tiles = tiles[0]
+    )
 
 
+    # 중구 흡연구역 마커
+    for i in range(smoking_area.shape[0]):
+            folium.Marker(
+                location = [smoking_area.loc[i, '_Y'], smoking_area.loc[i, '_X']],
+                popup = smoking_area.loc[i, 'field1'],
+                tooltip = smoking_area.loc[i, 'field1'],
+                icon = folium.Icon('red', icon = 'star')
+            ).add_to(m)
 
-
-# 실시간 CCTV // 라이브 웹캠
-st.subheader("실시간 CCTV 영상")
-run = st.checkbox('Run')
+    # 보여주기
+    st_data = st_folium(m, height=500, width=1200)
 
 
 
-img_file_buffer = st.camera_input(label='CCTV', key='hey everybody do you know my name')
+with tab2:
 
-# 이미지 캡쳐
-if img_file_buffer is not None:
-    bytes_data = img_file_buffer.getvalue()
-    cv2_img = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
+    # 실시간 CCTV // 라이브 웹캠
+    st.subheader("실시간 CCTV 영상")
+    run = st.checkbox('Run')
 
-    np.set_printoptions(suppress=True)
 
-    data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
-    image = Image.open(img_file_buffer)
+    img_file_buffer = st.camera_input(label='CCTV', key='hey everybody do you know my name')
 
-    img_array = np.array(image)
-    size = (224, 224)
-    image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
-    image_array = np.asarray(image)
-    normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1# Load the image into the array
-    data[0] = normalized_image_array
+    # 이미지 캡쳐
+    if img_file_buffer is not None:
+        bytes_data = img_file_buffer.getvalue()
+        cv2_img = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
 
-    prediction = model.predict(data)
-    index = np.argmax(prediction)
-    class_name = class_names[index]
-    confidence_score = prediction[0][1]
+        np.set_printoptions(suppress=True)
 
-    clean_status = round(100 - confidence_score * 100, 2)
+        data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
-    if clean_status <= 50:
-        st.warning(f'청결도: {class_name[2:]}, 청결도 : {clean_status}%', icon="⚠️")
+        image = Image.open(img_file_buffer)
+
+        img_array = np.array(image)
+        size = (224, 224)
+        image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
+        image_array = np.asarray(image)
+        normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1# Load the image into the array
+        data[0] = normalized_image_array
+
+        prediction = model.predict(data)
+        index = np.argmax(prediction)
+        class_name = class_names[index]
+        confidence_score = prediction[0][1]
+
+        clean_status = round(100 - confidence_score * 100, 2)
+
+        if clean_status <= 50:
+            st.warning(f'청결도: {class_name[2:]}, 청결도 : {clean_status}%', icon="⚠️")
+            
+            
         
-        
-        
+with tab3:    
 
-st.subheader('알림 기능 예시')
-alert_run = st.checkbox('Alert')
-trash_can = 0
+    st.subheader('알림 기능 예시')
+    alert_run = st.checkbox('Alert')
+    trash_can = 0
 
-while alert_run:
+    while alert_run:
 
-    time.sleep(np.random.randint(0,2))
+        time.sleep(np.random.randint(0,2))
 
-    if trash_can >= 85:
-        st.warning('쓰레기통을 비워주세요..', icon="⚠️")
-    # elif (trash_can >= 0) & (trash_can < 85):
-    #     st.error('쓰레기통이 비었습니다.')
-        break
-        
-    trash_can += np.random.randint(1,6)
+        if trash_can >= 85:
+            st.warning('쓰레기통을 비워주세요..', icon="⚠️")
+        # elif (trash_can >= 0) & (trash_can < 85):
+        #     st.error('쓰레기통이 비었습니다.')
+            break
+            
+        trash_can += np.random.randint(1,6)
         
     
-
-
