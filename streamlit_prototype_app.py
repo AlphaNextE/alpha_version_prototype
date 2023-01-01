@@ -17,4 +17,5 @@ if img_file_buffer is not None:
     # Should output shape: (height, width, channels)
     st.write(cv2_img.shape)
     
+    images = cv2.resize(cv2_img, (244, 244))
     st.image(cv2_img)
