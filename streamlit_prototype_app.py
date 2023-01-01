@@ -1,32 +1,3 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Codespaces
-Marketplace
-Explore
- 
-@AlphaNextE 
-AlphaNextE
-/
-alpha_version_prototype
-Private
-Code
-Issues
-Pull requests
-Actions
-Projects
-Security
-Insights
-Settings
-alpha_version_prototype/streamlit_prototype_app.py /
-@AlphaNextE
-AlphaNextE Update streamlit_prototype_app.py
-Latest commit f5f2135 1 minute ago
- History
- 1 contributor
-116 lines (73 sloc)  2.82 KB
-
 # 모듈 불러오기
 import streamlit as st
 from streamlit_folium import st_folium
