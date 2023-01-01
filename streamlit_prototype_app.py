@@ -18,4 +18,5 @@ if img_file_buffer is not None:
     st.write(cv2_img.shape)
     
     images = cv2.resize(cv2_img, (244, 244))
-    st.image(cv2_img)
+    st.write(images.shape)
+    st.image(images)
