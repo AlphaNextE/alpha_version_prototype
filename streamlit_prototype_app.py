@@ -18,15 +18,18 @@ from PIL import Image, ImageOps
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
+# 모델 불러오기
 model = load_model('keras_model.h5', compile=False)
-
 class_names = open('labels.txt', 'r', encoding='utf-8').readlines()
 
-tab1, tab2, tab3 = st.tabs(['Main', 'Sub1', 'Sub2'])
+# 탭 구성
+# tab1, tab2, tab3 = st.tabs(['Main', 'Sub1', 'Sub2'])
 
+tab1, tab2 = st.tabs(['Main', 'Sub1'])
 
+# 흡연부스 지도
 with tab1:
-    # 흡연구역 불러오기
+    # 흡연부스 위치 불러오기
     smoking_area = pd.read_csv('흡연부스중구름방.csv')
 
     # 시작좌표 및 타일지정
@@ -56,17 +59,21 @@ with tab1:
     st_data = st_folium(m, height=500, width=1200)
 
 
-
+# CCTV
 with tab2:
 
     # 실시간 CCTV // 라이브 웹캠
     st.subheader("실시간 CCTV 영상")
    
-    
+    # 기본 웹캠말고 다른 카메라를 사용하는 방법
+    # 1.인터넷 브라우저에서 카메라 허용해야함.
+    # 2.장치 관리자에서 웹캠을 끄고 OBS Studio를 이용해서 가상 카메라로 연결해야함
+
     img_file_buffer = st.camera_input(label='CCTV', key='hey everybody do you know my name')
 
     # 이미지 캡쳐
     if img_file_buffer is not None:
+        # 이미지 처리
         bytes_data = img_file_buffer.getvalue()
         cv2_img = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
 
@@ -86,31 +93,32 @@ with tab2:
         prediction = model.predict(data)
         index = np.argmax(prediction)
         class_name = class_names[index]
+        
+        # 청결도
         confidence_score = prediction[0][1]
-
         clean_status = round(100 - confidence_score * 100, 2)
 
         if clean_status <= 50:
             st.warning(f'청결도: {class_name[2:]}, 청결도 : {clean_status}%', icon="⚠️")
             
             
-        
-with tab3:    
+# 알림이 뜨는 방식 예시
+# with tab3:    
 
-    st.subheader('알림 기능 예시')
-    alert_run = st.checkbox('Alert')
-    trash_can = 0
+#     st.subheader('알림 기능 예시')
+#     alert_run = st.checkbox('Alert')
+#     trash_can = 0
 
-    while alert_run:
+#     while alert_run:
 
-        time.sleep(np.random.randint(0,2))
+#         time.sleep(np.random.randint(0,2))
 
-        if trash_can >= 85:
-            st.warning('쓰레기통을 비워주세요..', icon="⚠️")
-        # elif (trash_can >= 0) & (trash_can < 85):
-        #     st.error('쓰레기통이 비었습니다.')
-            break
+#         if trash_can >= 85:
+#             st.warning('쓰레기통을 비워주세요..', icon="⚠️")
+#         # elif (trash_can >= 0) & (trash_can < 85):
+#         #     st.error('쓰레기통이 비었습니다.')
+#             break
             
-        trash_can += np.random.randint(1,6)
+#         trash_can += np.random.randint(1,6)
         
     
