@@ -97,6 +97,10 @@ with tab2:
         # 청결도
         confidence_score = prediction[0][1]
         clean_status = round(100 - confidence_score * 100, 2)
+        
+        with st.spinner('Wait for it...'):
+            time.sleep(1)
+            st.success('Done!')
 
         if clean_status <= 50:
             st.warning(f'청결도: {class_name[2:]}, 청결도 : {clean_status}%', icon="⚠️")
